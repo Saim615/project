@@ -15,16 +15,16 @@ void onBeatDetected() {
 
 void setup() {
   Serial.begin(115200);
-  Wire.begin(D2, D1); // I2C pins for ESP8266 (SDA, SCL)
+  Wire.begin(D2, D1); 
 
   Serial.println("Initializing sensor...");
 
   if (!pox.begin()) {
     Serial.println("MAX30100 not found. Check wiring!");
-    while (1); // Stop if sensor not found
+    while (1); 
   }
 
-  pox.setIRLedCurrent(MAX30100_LED_CURR_7_6MA); // Optional tuning
+  pox.setIRLedCurrent(MAX30100_LED_CURR_7_6MA); 
   pox.setOnBeatDetectedCallback(onBeatDetected);
 
   Serial.println("Sensor Ready");
@@ -32,18 +32,18 @@ void setup() {
 
 void loop() {
   pox.update();
-  delay(10); // Recommended for stability
+  delay(10); 
 
   if (millis() - tsLastReport > REPORTING_PERIOD_MS) {
     float hr = pox.getHeartRate();
     float spo2 = pox.getSpO2();
 
-    // Read analog temperature sensor
+
     int raw = analogRead(A0);
-    float voltage = raw * (1.0 / 1023.0); // For 3.3V board
+    float voltage = raw * (1.0 / 1023.0); 
     float temperature = voltage * 100.0;
 
-    // Serial Output
+
     Serial.print("HR: "); Serial.print(hr, 1);
     Serial.print(" | SpO2: "); Serial.print(spo2, 1);
     Serial.print(" | Temp: "); Serial.println(temperature, 1);
